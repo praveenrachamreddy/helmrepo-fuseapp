@@ -1,15 +1,16 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: {{ include "helmrepo-fuseapp.fullname" . }}
+  name: {{ include "app.fullname" . }}
   labels:
-    {{- include "helmrepo-fuseapp.labels" . | nindent 4 }}
+    {{- include "app.labels" . | nindent 4 }}
 spec:
-  type: ClusterIP
+  type: {{ .Values.service.type }}
   ports:
-    - port: 8080
-      targetPort: http
+    - port: {{ .Values.service.port }}
+      targetPort: {{ .Values.service.port }}
       protocol: TCP
-      name: http
+      name: {{ .Values.service.port }}-http
   selector:
-    {{- include "helmrepo-fuseapp.selectorLabels" . | nindent 4 }}
+    {{- include "app.selectorLabels" . | nindent 4 }}
+  sessionAffinity: None
